@@ -1,56 +1,64 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import './Edit.css';
+import "./Edit.css";
 
 //////////////////////////////////////////////////////// THIS COMPONENT IS BEING RENDERED IN THE *POST* COMPONENT
 
 export default class Edit extends Component {
-  constructor( props ) {
-    super( props );
+  constructor(props) {
+    super(props);
 
     this.state = {
-      text: props.text
+      text: this.props.text,
+      id: this.props.id,
     };
-
-    this.updatePost = this.updatePost.bind( this );
   }
 
-  updateText( value ) {
+  updateText(value) {
     this.setState({ text: value });
   }
 
-  updatePost() {
-
-  }
+  updatePostFunc = () => {
+    this.props.updatePost(this.state.id, this.state.text);
+    this.props.hideEdit();
+  };
 
   render() {
     // More destructuring!
     const { hideEdit } = this.props;
-    const { text } = this.state;
+    const { text, id } = this.state;
+    console.log(this.state.text);
 
     return (
       <section className="Edit__parent">
-
         {/* This is the input field where you can edit the text */}
-        <textarea className="Edit__textarea" value={ text } onChange={ ( e ) => this.updateText( e.target.value ) }></textarea>
+        <textarea
+          className="Edit__textarea"
+          value={text}
+          onChange={(e) => this.updateText(e.target.value)}
+          placeholder={text}
+        ></textarea>
 
         <div className="Edit__controls">
           {/* This saves your changes made */}
-          <button id="Edit__controls-update" 
-                  className="Edit__control-btn"
-                  onClick={ this.updatePost }>
+          <button
+            id="Edit__controls-update"
+            className="Edit__control-btn"
+            onClick={this.updatePostFunc}
+          >
             Update
           </button>
 
           {/* This cancels the edit mode and does not save changes. Remember the "hideEdit" method was passed down through props */}
-          <button id="Edit__controsl-cancel"
-                  className="Edit__control-btn"
-                  onClick={ hideEdit }>
+          <button
+            id="Edit__controsl-cancel"
+            className="Edit__control-btn"
+            onClick={hideEdit}
+          >
             Cancel
           </button>
         </div>
-
       </section>
-    )
+    );
   }
 }
